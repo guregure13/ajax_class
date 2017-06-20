@@ -4,12 +4,13 @@ Rails.application.routes.draw do
   root 'board#index'
   
   
-  get 'board/index'
-  post 'board/create'
-  get 'board/new'
-  get 'board/edit'
-  get 'board/destroy'
-  post 'board/:post_id/comment_create' =>'board#comment_create'
+  get 'board/index'  #겉에 보여주는것
+  post 'board/create' # 글을 생성시켜주는 것
+  get 'board/new' # 개쓸모없음
+  get 'board/edit' # X
+  get 'board/destroy' # X
+  post 'board/:post_id/comment_create' =>'board#comment_create' 
+  # Post_id 값을 받아와서 그 PostId에 맞는 곳에 댓글을 생성해주는 기능
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

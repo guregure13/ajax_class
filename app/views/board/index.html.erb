@@ -21,20 +21,60 @@
         <%= post.content %> <br>
         <%= post.created_at %> <hr>
         
-        <% post.comments.each do |comment| %>
-          <span> [ </span>    <%= comment.id %> <span>] - </span>   
-        <%= comment.content %> <br>
-        <%end%>  
+        <p id="comment_<%=post.id%>">
+          <% post.comments.each do |comment| %>
+           
+          <span><%= comment.content %></span> <br>
+          <%end%> 
+        </p>
         
         <p>댓글달기</p><br>
-        <form action='/board/<%=post.id%>/comment_create' method='post'>
+        
+        
+
           <div class="form-group">
-                <input type="text" class="form-control" name="content" id="title" placeholder="댓글을 입력하세요">
+                <input type="text" class="form-control" name="content" id="title_<%=post.id %>" placeholder="댓글을 입력하세요">
           </div>
-          <button type="submit" class="btn btn-default">Submit</button> <hr>
-        </form>
+          <button type="submit" value="<%=post.id%>" class="btn btn-default reply_submit">Submit</button> <hr>
+      
         
         <%end%>
         
 
 </div>
+
+<script>
+
+  $( ".reply_submit" ).click(function() {
+    
+    
+    post_number = this.value;
+    push_msg = $('#title_'+post_number).val();
+    
+    if($('#title_'+post_number).val() != ""){
+    $.ajax({
+      method: "POST", /*메소드 : form 태그에서 메소드 */
+      url: "/board/"+post_number+"/comment_create", /* 이 URL 부분이 form action 기능을 대체한다 */
+      data: { content: push_msg },
+      
+      error : function(error) {
+        alert("댓글 등록에 실패 하였습니다.");
+      },
+      
+      success : function(data) {
+        $("#comment_"+post_number).append("<span>"+push_msg+"</span><br>");
+        $('#title_'+post_number).val("");
+      }
+      
+    })
+
+    }else{
+      alert("내용이 없습니다.");
+    }
+  });
+  
+  
+  
+  
+  
+</script>
